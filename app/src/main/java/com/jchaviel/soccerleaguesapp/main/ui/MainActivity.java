@@ -192,11 +192,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         }
 
-        if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, Preferences.class);
-            startActivity(intent);
-        }
-
         if (item.getItemId() == R.id.action_logout) {
             logout();
         }
