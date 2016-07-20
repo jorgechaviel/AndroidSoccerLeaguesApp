@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">SoccerLeaguesApp</string>
+
+    <string name="login.message.email">Correo electrónico</string>
+    <string name="login.message.password">Contraseña</string>
+    <string name="login.message.signin">Iniciar sesión</string>
+    <string name="login.message.signup">Crear cuenta</string>
+    <string name="login.notice.message.useradded">Usuario registrado exitosamente</string>
+    <string name="login.error.message.signin">Imposible iniciar sesión %s</string>
+    <string name="login.error.message.signup">Imposible registrar nuevo usuario %s</string>
+    <string name="main.menu.action.logout">Cerrar sesión</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="tab.name.clasification">Clasification</string>
+    <string name="tab.name.matches">Matches</string>
+    <string name="tab.name.news">News</string>
+
+    <string name="title_main_activity">Principal</string>
+    <string name="title_activity_preferences">Preferences</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string-array name="date_formats">
+        <item>dd-MM-yyyy</item>
+        <item>MM-dd-yyyy</item>
+    </string-array>
+    <string-array name="date_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+</resources>

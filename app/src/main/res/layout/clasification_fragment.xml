@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/table_heading"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:orientation="horizontal">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/table_rank"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:text="#"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/table_team_name"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/table_rank"
+                    android:layout_weight="0.8"
+                    android:gravity="center_vertical"
+                    android:text="Team"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/table_matches_played"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="0dp"
+                    android:layout_toLeftOf="@+id/table_wins"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="M"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/table_wins"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignTop="@id/table_team_name"
+                    android:layout_marginRight="0dp"
+                    android:layout_toLeftOf="@+id/table_draw"
+                    android:layout_weight="0.5"
+                    android:background="@color/orange"
+                    android:gravity="center"
+                    android:text="W"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/table_draw"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignTop="@id/table_team_name"
+                    android:layout_marginRight="0dp"
+                    android:layout_toLeftOf="@+id/table_loss"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="D"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/table_loss"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignTop="@id/table_team_name"
+                    android:layout_marginRight="0dp"
+                    android:layout_toLeftOf="@+id/table_goal_diff"
+                    android:layout_weight="0.5"
+                    android:background="@color/orange"
+                    android:gravity="center"
+                    android:text="L"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/table_goal_diff"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignTop="@id/table_team_name"
+                    android:layout_marginRight="0dp"
+                    android:layout_toLeftOf="@+id/table_points"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="GD"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/table_points"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/table_team_name"
+                    android:layout_weight="0.5"
+                    android:background="@color/orange"
+                    android:gravity="center"
+                    android:text="P"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/clubs_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/table_heading" />
+
+</RelativeLayout>
