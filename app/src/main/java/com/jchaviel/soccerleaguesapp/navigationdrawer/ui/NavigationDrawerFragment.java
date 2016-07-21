@@ -130,7 +130,9 @@ public class NavigationDrawerFragment extends Fragment {
                             findViewById(R.id.league_name)).getText().toString();
 
                     Spinner spinner = (Spinner)getActivity().findViewById(R.id.teams_spinner_news);
-                    spinner.setSelection(((ArrayAdapter)spinner.getAdapter()).getPosition("All"));
+                    if(spinner != null){
+                        spinner.setSelection(((ArrayAdapter)spinner.getAdapter()).getPosition("All"));
+                    }    
 
 //                    message = String.format(message, Global.selectedLeagueName);
 //                    Global.showToast(getActivity(), message);
