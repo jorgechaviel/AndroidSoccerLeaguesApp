@@ -210,7 +210,6 @@ public class NewsFragment extends Fragment implements NewsView, OnItemClickListe
      */
     @Override
     public void onDestroy() {
-        teamsSpinnerNews.setSelection(mTeamsSpinnerAdapter.getPosition("All"));
         newsAdapter.clearNews();
         presenter.unsubscribe();
         presenter.onDestroy();
