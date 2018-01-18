@@ -32,7 +32,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     private EventBus eventBus;
     private FirebaseAPI firebaseAPI;
 
-    private final String MONTH_FORMAT = "MMMM";
+    private final String MONTH_FORMAT = "MM";
     private final String PARSING_DONE_MESSAGE = "team parsing done";
     private final String KEY_HEADING_4 = "h4";
     private final String KEY_SEPARATOR = "separator";
