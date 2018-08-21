@@ -148,12 +148,14 @@ public class ClassificationFragment extends Fragment implements ClassificationVi
 
     @Override
     public void showProgress() {
-        progressBarTable.setVisibility(View.VISIBLE);
+        if(progressBarTable != null)
+            progressBarTable.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideHeading() {
-        linearLayoutHeading.setVisibility(View.GONE);
+        if(linearLayoutHeading != null)
+            linearLayoutHeading.setVisibility(View.GONE);
     }
 
     @Override
@@ -163,7 +165,8 @@ public class ClassificationFragment extends Fragment implements ClassificationVi
 
     @Override
     public void hideTeamList() {
-        recyclerView.setVisibility(View.GONE);
+        if(recyclerView != null)
+            recyclerView.setVisibility(View.GONE);
     }
 
     @Override
