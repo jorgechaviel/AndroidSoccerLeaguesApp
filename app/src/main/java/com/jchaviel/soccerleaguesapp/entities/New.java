@@ -1,6 +1,6 @@
 package com.jchaviel.soccerleaguesapp.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by jchavielreyes On 12/07/2016.
  */
 public class New implements Serializable {
-    @JsonIgnore
+    @Exclude
     private String id;
 
     private String mTitle;

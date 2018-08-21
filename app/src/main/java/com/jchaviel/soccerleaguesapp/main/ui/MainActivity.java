@@ -21,7 +21,7 @@ import android.view.View;
 
 import com.jchaviel.soccerleaguesapp.R;
 import com.jchaviel.soccerleaguesapp.SoccerLeaguesApp;
-import com.jchaviel.soccerleaguesapp.clasification.ui.ClasificationFragment;
+import com.jchaviel.soccerleaguesapp.clasification.ui.ClassificationFragment;
 import com.jchaviel.soccerleaguesapp.global.Constants;
 import com.jchaviel.soccerleaguesapp.global.Global;
 import com.jchaviel.soccerleaguesapp.global.SlidingTabLayout;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 getString(R.string.tab_name_matches),
                 getString(R.string.tab_name_news)};
 
-        Fragment[] fragments = new Fragment[]{ new ClasificationFragment(),
+        Fragment[] fragments = new Fragment[]{ new ClassificationFragment(),
                                                new ScheduleFragment(),
                                                new NewsFragment()};
         app.getMainComponent(this, getSupportFragmentManager(), fragments, titles).inject(this);

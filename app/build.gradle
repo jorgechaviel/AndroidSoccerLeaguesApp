@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
+    google()
     mavenCentral()
 }
 
@@ -15,6 +15,11 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
     }
     buildTypes {
         release {
@@ -22,31 +27,43 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
 
-    compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
-    compile "com.firebase:firebase-client-android:$rootProject.ext.firebaseClientVersion"
-    compile "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
-    compile "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
-    compile "de.hdodenhof:circleimageview:$rootProject.ext.circleImageViewVersion"
-    compile "org.greenrobot:eventbus:$rootProject.ext.eventbusVersion"
-    compile 'com.android.support:support-v4:23.4.0'
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    implementation "com.google.firebase:firebase-core:16.0.1"
+    implementation "com.google.firebase:firebase-database:16.0.1"
+    implementation "com.google.firebase:firebase-crash:16.0.1"
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
+    implementation "de.hdodenhof:circleimageview:$rootProject.ext.circleImageViewVersion"
+    implementation "org.greenrobot:eventbus:$rootProject.ext.eventbusVersion"
 
-    apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
-    compile "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
-    compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+    implementation "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
+    implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
 
-    testCompile "org.robolectric:robolectric:$rootProject.ext.roboelectricVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.ext.roboelectricVersion"
+    testImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanaryVersion"
 
-    compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
-    compile "com.github.traex.rippleeffect:library:$rootProject.ext.rippleeffectVersion"
-    compile "org.jsoup:jsoup:$rootProject.ext.jsoupVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.patrickpissurno:ripple-effect:$rootProject.ext.rippleeffectVersion"
+    implementation "org.jsoup:jsoup:$rootProject.ext.jsoupVersion"
+    implementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanaryVersion"
+    implementation 'com.google.firebase:firebase-crash:15.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

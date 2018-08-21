@@ -3,8 +3,12 @@ package com.jchaviel.soccerleaguesapp;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-
-import com.firebase.client.Firebase;
+import com.google.firebase.database.FirebaseDatabase;
+import com.jchaviel.soccerleaguesapp.clasification.di.ClassificationComponent;
+import com.jchaviel.soccerleaguesapp.clasification.di.ClassificationModule;
+import com.jchaviel.soccerleaguesapp.clasification.di.DaggerClassificationComponent;
+import com.jchaviel.soccerleaguesapp.clasification.ui.ClassificationFragment;
+import com.jchaviel.soccerleaguesapp.clasification.ui.ClassificationView;
 import com.jchaviel.soccerleaguesapp.domain.di.DomainModule;
 import com.jchaviel.soccerleaguesapp.lib.di.LibsModule;
 import com.jchaviel.soccerleaguesapp.login.di.DaggerLoginComponent;
@@ -26,6 +30,7 @@ import com.jchaviel.soccerleaguesapp.schedule.di.ScheduleComponent;
 import com.jchaviel.soccerleaguesapp.schedule.di.ScheduleModule;
 import com.jchaviel.soccerleaguesapp.schedule.ui.ScheduleFragment;
 import com.jchaviel.soccerleaguesapp.schedule.ui.ScheduleView;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by jchavielreyes On 12/07/2016.
@@ -33,7 +38,7 @@ import com.jchaviel.soccerleaguesapp.schedule.ui.ScheduleView;
 public class SoccerLeaguesApp extends Application {
 
     private final static String SHARED_PREFERENCES_NAME = "UserPrefs";
-    private final static String FIREBASE_URL = "https://android-share-photo.firebaseio.com";
+    //private final static String FIREBASE_URL = "https://soccerleaguesapp.firebaseio.com";
 
     private DomainModule domainModule;
     private SoccerLeaguesAppModule soccerLeaguesAppModule;
@@ -41,17 +46,28 @@ public class SoccerLeaguesApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initLeakCanary();
         initFirebase();
         initModules();
     }
 
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+//             This process is dedicated to LeakCanary for heap analysis.
+//             You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+    }
+
     private void initModules() {
         soccerLeaguesAppModule = new SoccerLeaguesAppModule(this);
-        domainModule = new DomainModule(FIREBASE_URL);
+        domainModule = new DomainModule();
     }
 
     private void initFirebase() {
-        Firebase.setAndroidContext(this);
+        //Firebase.setAndroidContext(this);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     public String getSharedPreferencesName() {
@@ -98,4 +114,13 @@ public class SoccerLeaguesApp extends Application {
                 .build();
     }
 
+    public ClassificationComponent getClassificationComponent(ClassificationFragment fragment, ClassificationView view){
+        return DaggerClassificationComponent
+                .builder()
+                .soccerLeaguesAppModule(soccerLeaguesAppModule)
+                .domainModule(domainModule)
+                .libsModule(new LibsModule(fragment))
+                .classificationModule(new ClassificationModule(view))
+                .build();
+    }
 }

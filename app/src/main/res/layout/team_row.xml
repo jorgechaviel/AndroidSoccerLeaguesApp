@@ -44,7 +44,7 @@
                     android:layout_weight="0.8"
                     android:gravity="center_vertical"
                     android:paddingBottom="15dp"
-                    android:text="Team"
+                    android:text="@string/team"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="15dp" />
             </LinearLayout>

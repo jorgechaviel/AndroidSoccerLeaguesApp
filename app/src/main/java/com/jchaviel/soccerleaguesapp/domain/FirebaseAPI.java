@@ -1,26 +1,30 @@
 package com.jchaviel.soccerleaguesapp.domain;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
-import java.util.Map;
+import android.support.annotation.NonNull;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by jchavielreyes on 7/4/16.
  */
 public class FirebaseAPI {
 
-    private Firebase firebase;
+    private DatabaseReference firebase;
+    private FirebaseAuth firebaseAuth;
     private ChildEventListener photosEventListener;
 
     private final static String SEPARATOR = "___";
 
-    public FirebaseAPI(Firebase firebase) {
+    public FirebaseAPI(DatabaseReference firebase, FirebaseAuth firebaseAuth) {
         this.firebase = firebase;
+        this.firebaseAuth = firebaseAuth;
     }
 
     /**
@@ -38,8 +42,8 @@ public class FirebaseAPI {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                listenerCallback.onError(firebaseError);
+            public void onCancelled(DatabaseError databaseError) {
+                listenerCallback.onError(databaseError);
             }
         });
     }
@@ -64,8 +68,8 @@ public class FirebaseAPI {
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
                 @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    listenerCallback.onCanceller(firebaseError);
+                public void onCancelled(DatabaseError databaseError) {
+                    listenerCallback.onCanceller(databaseError);
                 }
             };
             firebase.addChildEventListener(photosEventListener);
@@ -96,49 +100,46 @@ public class FirebaseAPI {
 
     public String getAuthEmail(){
         String email = null;
-        if(firebase.getAuth() != null){
-            Map<String, Object> providerData = firebase.getAuth().getProviderData();
-            email = providerData.get("email").toString();
+        if(firebaseAuth != null){
+            email = firebaseAuth.getCurrentUser().getEmail().toString();
         }
         return email;
     }
 
     public void logout(){
-        firebase.unauth();
+        firebaseAuth.signOut();
     }
 
     public void login(String email, String password, final FirebaseActionListenerCallback listenerCallback){
-        firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onAuthenticated(AuthData authData) {
-                listenerCallback.onSuccess();
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                listenerCallback.onError(firebaseError);
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    listenerCallback.onSuccess();
+                } else {
+                    listenerCallback.onError(DatabaseError.fromException(task.getException()));
+                }
             }
         });
     }
 
     public void signup(String email, String password, final FirebaseActionListenerCallback listenerCallback){
-        //Map<String, Object> se le coloca porque debe ser del mismo tipo que el ProviderData
-        firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
-
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onSuccess(Map<String, Object> o) {
-                listenerCallback.onSuccess();
-            }
-
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                listenerCallback.onError(firebaseError);
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    listenerCallback.onSuccess();
+                } else {
+                    listenerCallback.onError(DatabaseError.fromException(task.getException()));
+                }
             }
         });
     }
 
     public void checkForSession(FirebaseActionListenerCallback listenerCallback){
-        if(firebase.getAuth() != null){
+        if(firebaseAuth.getCurrentUser() != null){
             listenerCallback.onSuccess();
         } else {
             listenerCallback.onError(null);

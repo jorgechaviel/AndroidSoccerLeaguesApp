@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private void setupToolbar() {
         //Set action bar
-        Toolbar actionBarToolbar = (Toolbar) findViewById(R.id.action_bar);
+        Toolbar actionBarToolbar = findViewById(R.id.action_bar);
         actionBarToolbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange)));
         actionBarToolbar.setTitleTextColor(Color.WHITE);
     }

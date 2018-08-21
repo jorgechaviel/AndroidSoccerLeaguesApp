@@ -20,7 +20,7 @@
         android:layout_alignBottom="@id/league_logo"
         android:layout_toEndOf="@id/league_logo"
         android:layout_toRightOf="@id/league_logo"
-        android:text="League"
+        android:text="@string/league"
         android:textSize="15dp" />
 
 </RelativeLayout>

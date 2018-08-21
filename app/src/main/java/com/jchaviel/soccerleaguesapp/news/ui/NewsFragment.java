@@ -11,7 +11,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +28,18 @@ import com.jchaviel.soccerleaguesapp.global.Global;
 import com.jchaviel.soccerleaguesapp.news.NewsPresenter;
 import com.jchaviel.soccerleaguesapp.news.ui.adapter.NewsAdapter;
 import com.jchaviel.soccerleaguesapp.news.ui.adapter.OnItemClickListener;
+
 import java.util.ArrayList;
+
 import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * Created by jchavielreyes On 12/07/2016.
  */
-public class NewsFragment extends Fragment implements NewsView, OnItemClickListener {
+public class NewsFragment extends Fragment implements NewsView, OnItemClickListener{
 
     @Bind(R.id.teams_spinner_news)
     Spinner teamsSpinnerNews;
@@ -94,12 +96,12 @@ public class NewsFragment extends Fragment implements NewsView, OnItemClickListe
         //Set data from bundle if league hasnt changed
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(KEY_NEWS)
-                && ((String) savedInstanceState.getString(Constants.KEY_ACTION_BAR_TITLE))
+                && (savedInstanceState.getString(Constants.KEY_ACTION_BAR_TITLE))
                 .equals(getActionBarTitle())) {
             mNews = (ArrayList<New>) savedInstanceState.getSerializable(KEY_NEWS);
 
         } else {
-            mNews = new ArrayList<New>();
+            mNews = new ArrayList<>();
         }
         fetchData();
         return mNewsView;
@@ -194,7 +196,7 @@ public class NewsFragment extends Fragment implements NewsView, OnItemClickListe
         String leagueName = ((AppCompatActivity) getActivity())
                 .getSupportActionBar().getTitle().toString();
 
-        String team = "";
+        String team;
         try {
             team = teamsSpinnerNews.getSelectedItem().toString().trim();
         } catch (Exception e) {

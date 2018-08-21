@@ -1,6 +1,6 @@
 package com.jchaviel.soccerleaguesapp.login;
 
-import com.firebase.client.FirebaseError;
+import com.google.firebase.database.DatabaseError;
 import com.jchaviel.soccerleaguesapp.domain.FirebaseAPI;
 import com.jchaviel.soccerleaguesapp.domain.FirebaseActionListenerCallback;
 import com.jchaviel.soccerleaguesapp.lib.base.EventBus;
@@ -22,23 +22,26 @@ public class LoginRepositoryImpl implements LoginRepository {
 
     @Override
     public void signUp(final String email, final String password) {
-        firebaseAPI.signup(email, password, new FirebaseActionListenerCallback() {
-            @Override
-            public void onSuccess() {
-                postEvent(LoginEvent.onSignUpSuccess);
-                signIn(email, password);
-            }
+        if(email != null && !email.equals("") && password != null && !password.equals("")) {
+            firebaseAPI.signup(email, password, new FirebaseActionListenerCallback() {
+                @Override
+                public void onSuccess() {
+                    postEvent(LoginEvent.onSignUpSuccess);
+                    signIn(email, password);
+                }
 
-            @Override
-            public void onError(FirebaseError error) {
-                postEvent(LoginEvent.onSignUpError, error.getMessage(), null);
-            }
-        });
+                @Override
+                public void onError(DatabaseError databaseError) {
+                    postEvent(LoginEvent.onSignUpError, databaseError.getMessage(), null);
+                }
+            });
+        } else
+            postEvent(LoginEvent.onSignUpError);
     }
 
     @Override
     public void signIn(String email, String password) {
-        if(email != null && password != null){
+        if(email != null && !email.equals("") && password != null && !password.equals("")){
             firebaseAPI.login(email, password, new FirebaseActionListenerCallback() {
                 @Override
                 public void onSuccess() {
@@ -47,8 +50,8 @@ public class LoginRepositoryImpl implements LoginRepository {
                 }
 
                 @Override
-                public void onError(FirebaseError error) {
-                    postEvent(LoginEvent.onSignInError, error.getMessage(), null);
+                public void onError(DatabaseError databaseError) {
+                    postEvent(LoginEvent.onSignInError, databaseError.getMessage(), null);
                 }
             });
         } else {
@@ -60,7 +63,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 }
 
                 @Override
-                public void onError(FirebaseError error) {
+                public void onError(DatabaseError databaseError) {
                     postEvent(LoginEvent.onFailedToRecoverSession);
                 }
             });

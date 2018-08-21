@@ -1,23 +1,16 @@
 package com.jchaviel.soccerleaguesapp.schedule.ui.adapter;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.andexert.library.RippleView;
 import com.jchaviel.soccerleaguesapp.R;
 import com.jchaviel.soccerleaguesapp.domain.Utils;
 import com.jchaviel.soccerleaguesapp.entities.Fixture;
 import com.jchaviel.soccerleaguesapp.lib.base.ImageLoader;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

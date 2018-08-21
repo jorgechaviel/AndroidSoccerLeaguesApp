@@ -1,5 +1,6 @@
 package com.jchaviel.soccerleaguesapp.schedule;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.jchaviel.soccerleaguesapp.domain.FirebaseAPI;
@@ -64,13 +65,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public void subscribe(String leagueName, ArrayList<Fixture> fixtureList, String month, String teamName) {
         leagueNameSelected = leagueName;
-
         loadFixtures().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
                         leagueName,
                         fixtureList,
                         month,
                         teamName);
-
     }
 
     @Override
@@ -94,6 +93,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         eventBus.post(event);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public AsyncTask<Object, Void, Void> loadFixtures() {
 
         return new AsyncTask<Object, Void, Void>(){
@@ -137,19 +137,16 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             }
 
             private int getYear(String month) {
-
                 int year = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.YEAR);
                 try {
                     Date date = new SimpleDateFormat(MONTH_FORMAT).parse(month); //Get only name of month
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
-
                     //League years exists between August and May
                     if (cal.get(Calendar.MONTH) < Calendar.AUGUST) return (year + INDEX_ONE);
                 } catch (ParseException e) {
                     Log.e(KEY_LOG, e.getMessage());
                 }
-
                 return year;
             }
 
@@ -172,19 +169,17 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 String month = ((String) params[2]).trim();
                 String team = ((String) params[3]).trim();
 
-                String fixtureLink = "";
+                String fixtureLink;
                 if (team.equalsIgnoreCase(TEAM_ALL)) { // 'All' means get schedule of entire league for specific month
                     fixtureLink = getLeagueFixtureLink(leagueName, month);
                 } else {
                     fixtureLink = getTeamFixtureLink(team);
                 }
-//                Log.d(KEY_LOG, fixtureLink);
+                Log.d(KEY_LOG, fixtureLink);
 
                 try {
                     //Fetch document from web
                     Document doc = Jsoup.connect(fixtureLink).userAgent(Constants.USER_AGENT).get();
-//                    Log.d(KEY_LOG, doc.html());
-
                     if (team.equalsIgnoreCase(TEAM_ALL)) {
                         Elements fixtureGroups = doc.getElementsByClass(Constants.LEAGUE_FIXTURES_GROUP);
                         getLeagueFixtureData(fixtureObjList, fixtureGroups);
@@ -192,8 +187,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                         Elements fixtures = doc.getElementsByClass(Constants.TEAM_FIXTURES_CLASS);
                         getTeamFixturesData(fixtureObjList, fixtures, month);
                     }
-
-//                    Log.d(KEY_LOG, doc.html());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -224,7 +217,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
                     for (Element fixture : fixtures) {
 
-                        String time = time = fixture.getElementsByClass(KET_TIME).get(INDEX_ZERO).text();
+                        String time = fixture.getElementsByClass(KET_TIME).get(INDEX_ZERO).text();
 
                         String homeTeam = fixture.getElementsByClass(CLASS_TEAM_NAME).get(INDEX_ZERO).child(INDEX_ZERO).text();
                         String homeTeamLogo = fixture.getElementsByClass(CLASS_TEAM_NAME).get(INDEX_ZERO).child(INDEX_ZERO).child(INDEX_ZERO).attr(SRC_ATTR);
@@ -285,8 +278,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                     String awayScore = fixture.getElementsByClass(KEY_AWAY_SCORE).get(INDEX_ZERO).text();
                     String separator = fixture.getElementsByClass(KEY_SEPARATOR).get(INDEX_ZERO).text();
 
-
-//                    Log.d(KEY_LOG, PARSING_DONE_MESSAGE);
+                    Log.d(KEY_LOG, PARSING_DONE_MESSAGE);
 
                     //Object to store fixture data
                     Fixture fixtureObj = new Fixture(date, status, time, homeTeam,
@@ -295,7 +287,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
                     fixtureList.add(fixtureObj);
                 }
-
                 fixturesList.addAll(fixtureList);
             }
 

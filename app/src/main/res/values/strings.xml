@@ -20,6 +20,8 @@
     <string name="title_activity_preferences">Preferences</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="league">League</string>
+    <string name="team">Team</string>
 
     <string-array name="date_formats">
         <item>dd-MM-yyyy</item>

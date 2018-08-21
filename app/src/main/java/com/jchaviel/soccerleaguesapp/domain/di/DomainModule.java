@@ -3,7 +3,9 @@ package com.jchaviel.soccerleaguesapp.domain.di;
 import android.content.Context;
 import android.location.Geocoder;
 
-import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jchaviel.soccerleaguesapp.domain.FirebaseAPI;
 import com.jchaviel.soccerleaguesapp.domain.Utils;
 
@@ -18,29 +20,22 @@ import dagger.Provides;
 @Module
 public class DomainModule {
 
-    String firebaseURL;
-
-    public DomainModule(String firebaseURL) {
-        this.firebaseURL = firebaseURL;
+    @Provides
+    @Singleton
+    FirebaseAPI providesFirebaseAPI(DatabaseReference firebase, FirebaseAuth firebaseAuth){
+        return new FirebaseAPI(firebase, firebaseAuth);
     }
 
     @Provides
     @Singleton
-    FirebaseAPI providesFirebaseAPI(Firebase firebase){
-        return new FirebaseAPI(firebase);
+    DatabaseReference providesFirebase(){
+        return FirebaseDatabase.getInstance().getReference();
     }
 
     @Provides
     @Singleton
-    Firebase providesFirebase(String firebaseURL){
-        return new Firebase(firebaseURL);
-    }
-
-
-    @Provides
-    @Singleton
-    String providesFirebaseURL(){
-        return this.firebaseURL;
+    FirebaseAuth providesFirebaseAuth(){
+        return FirebaseAuth.getInstance();
     }
 
     @Provides

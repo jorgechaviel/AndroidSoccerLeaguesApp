@@ -22,7 +22,7 @@
             android:id="@+id/teams_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"></Spinner>
+            android:layout_gravity="left" />
 
         <Spinner
             android:id="@+id/months_spinner"
@@ -31,13 +31,14 @@
             android:layout_gravity="end"
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
-            android:layout_toRightOf="@id/teams_spinner"></Spinner>
+            android:layout_toRightOf="@id/teams_spinner" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fixture_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         android:layout_below="@id/spinners"
         android:clickable="true"
         android:focusable="true" />

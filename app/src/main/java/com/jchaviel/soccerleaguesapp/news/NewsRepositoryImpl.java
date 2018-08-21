@@ -1,7 +1,7 @@
 package com.jchaviel.soccerleaguesapp.news;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
-import android.util.Log;
 import com.jchaviel.soccerleaguesapp.domain.FirebaseAPI;
 import com.jchaviel.soccerleaguesapp.entities.New;
 import com.jchaviel.soccerleaguesapp.global.Constants;
@@ -29,7 +29,7 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     private final CharSequence KEY_RSS = "rss";
     private final String KEY_INDEX = "index";
-    private final String KEY_LOG = "clear";
+    private final String KEY_LOG = "news";
     private final String KEY_NEWS_ITEM = "item";
     private final String KEY_TITLE = "title";
     private final String KEY_LINK = "link";
@@ -74,6 +74,7 @@ public class NewsRepositoryImpl implements NewsRepository {
         eventBus.post(event);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public AsyncTask<Object, Void, Void> load() {
 
         return new AsyncTask<Object, Void, Void>(){
@@ -129,14 +130,12 @@ public class NewsRepositoryImpl implements NewsRepository {
                 //Page contains all feeds web-links for all leagues and teams
                 //Document newsFeedsPage = getNewsFeedPage();
 
-                String newsLink = "";
+                String newsLink;
                 if (team.equalsIgnoreCase("all")) {
                     newsLink = getLeagueNewsLink(leagueName);
                 } else {
                     newsLink = getTeamNewsLink(team);
                 }
-                Log.d("test", newsLink);
-
                 // Extract data from rss feed
                 getRssData(newsLink, newsObjList);
 
@@ -167,7 +166,6 @@ public class NewsRepositoryImpl implements NewsRepository {
                         newsObjList.add(new New(title, imageLink, date, link));
                     }
                     newsList.addAll(newsObjList);
-                    Log.d(KEY_LOG, doc.html());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

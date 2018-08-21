@@ -1,7 +1,7 @@
 package com.jchaviel.soccerleaguesapp.main.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.jchaviel.soccerleaguesapp.entities.Team;
 import com.jchaviel.soccerleaguesapp.global.Constants;
@@ -33,6 +33,7 @@ public class ClasificationDataStorage implements DataStorage {
     private final int INDEX_TWENTY_TWO = 22;
     private final int INDEX_TWENTY_THREE = 23;
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public AsyncTask<Object, Object, Void> load() {
         return new AsyncTask<Object, Object, Void>(){
