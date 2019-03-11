@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.jchaviel.soccerleaguesapp.R;
 import com.jchaviel.soccerleaguesapp.SoccerLeaguesApp;
 import com.jchaviel.soccerleaguesapp.clasification.ui.ClassificationFragment;
@@ -32,14 +31,10 @@ import com.jchaviel.soccerleaguesapp.main.ui.adapter.FragmentsPagerAdapter;
 import com.jchaviel.soccerleaguesapp.navigationdrawer.ui.NavigationDrawerFragment;
 import com.jchaviel.soccerleaguesapp.news.ui.NewsFragment;
 import com.jchaviel.soccerleaguesapp.schedule.ui.ScheduleFragment;
-
 import java.util.Arrays;
-
 import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 
 /**
  * Created by jchavielreyes On 12/07/2016.
@@ -53,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Bind(R.id.tabs) SlidingTabLayout mTabs;
     @Bind(R.id.landing_activity_pager) ViewPager mViewPager;
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @Bind(R.id.action_bar) Toolbar actionBarToolbar;
 
     private FragmentManager mFragmentManager;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -124,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private void setupToolbar() {
         //Set action bar
-        Toolbar actionBarToolbar = (Toolbar) findViewById(R.id.action_bar);
         actionBarToolbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange)));
         actionBarToolbar.setTitleTextColor(Color.WHITE);
     }
@@ -219,8 +214,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
 
         // Check if user is running app for very first time
-        mUserAwareOfDrawer = Boolean.valueOf(readFromPreferences(getApplicationContext(),
-                Constants.KEY_USER_AWARE_OF_DRAWER, FALSE));
+        mUserAwareOfDrawer = Boolean.valueOf(readFromPreferences(getApplicationContext()
+        ));
 
         // Check if activity is being created first time
         mStartingFirstTime = savedInstanceState != null;
@@ -328,14 +323,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
      * Reads information about whether app is being run for first time
      *
      * @param context
-     * @param preferenceKey
-     * @param defaultValue
      * @return
      */
-    private String readFromPreferences(Context context, String preferenceKey, String defaultValue) {
+    private String readFromPreferences(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences
                 (Constants.DRAWER_PREF_FILE_NAME, Context.MODE_PRIVATE);
 
-        return sharedPreferences.getString(preferenceKey, defaultValue);
+        return sharedPreferences.getString(Constants.KEY_USER_AWARE_OF_DRAWER, MainActivity.FALSE);
     }
 }

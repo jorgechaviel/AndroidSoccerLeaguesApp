@@ -1,6 +1,5 @@
 package com.jchaviel.soccerleaguesapp.navigationdrawer.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -12,26 +11,30 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.jchaviel.soccerleaguesapp.R;
-import com.jchaviel.soccerleaguesapp.entities.League;
+import com.jchaviel.soccerleaguesapp.SoccerLeaguesApp;
 import com.jchaviel.soccerleaguesapp.global.Constants;
 import com.jchaviel.soccerleaguesapp.global.Global;
-
-import java.util.Collections;
-import java.util.List;
+import com.jchaviel.soccerleaguesapp.navigationdrawer.ui.adapter.LeagueAdapter;
+import com.jchaviel.soccerleaguesapp.navigationdrawer.ui.adapter.OnItemTouchListener;
+import javax.inject.Inject;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by jchavielreyes On 12/07/2016.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements OnItemTouchListener {
+
+    @Bind(R.id.drawer_list)
+    RecyclerView mRecyclerView;
 
     private DrawerLayout mDrawLayout;
-    private RecyclerView mRecyclerView;
-    private LeagueAdapter mLeagueAdapter;
+
+    @Inject
+    LeagueAdapter mLeagueAdapter;
 
     /**
      * Constructor
@@ -47,7 +50,13 @@ public class NavigationDrawerFragment extends Fragment {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setupInjection();
         super.onCreate(savedInstanceState);
+    }
+
+    private void setupInjection() {
+        SoccerLeaguesApp app = (SoccerLeaguesApp) getActivity().getApplication();
+        app.getNavigationDrawerComponent(this, this).inject(this);
     }
 
     /**
@@ -64,19 +73,19 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View drawer = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        mRecyclerView = (RecyclerView) drawer.findViewById(R.id.drawer_list);
+        ButterKnife.bind(this, drawer);
+        setupRecyclerView();
+        return drawer;
+    }
 
-        mLeagueAdapter = new LeagueAdapter(getActivity(), Global.leagues());
+    private void setupRecyclerView() {
         mRecyclerView.setAdapter(mLeagueAdapter);
-
+        // Show items in list one below another
         //Setup recycler view click detection mechanism
         setupClickDetection();
 
-        // Show items in list one below another
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-
-        return drawer;
     }
 
     /**
@@ -129,7 +138,7 @@ public class NavigationDrawerFragment extends Fragment {
                     Global.selectedLeagueName = ((TextView) league.
                             findViewById(R.id.league_name)).getText().toString();
 
-                    Spinner spinner = (Spinner)getActivity().findViewById(R.id.teams_spinner_news);
+                    Spinner spinner = getActivity().findViewById(R.id.teams_spinner_news);
                     if(spinner != null){
                         spinner.setSelection(((ArrayAdapter)spinner.getAdapter()).getPosition("All"));
                     }    
@@ -163,108 +172,27 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawLayout = drawerLayout;
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent motionEvent, GestureDetector gestureDetector) {
+        //Gey view under touch using coordinates
+        View league = mRecyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
 
-    /**************************************************************************************
-     * Adapter
-     **************************************************************************************/
+        //If touch event, then set actionbar title and close navigation drawer
+        if (league != null && gestureDetector.onTouchEvent(motionEvent)) {
+            String message = Constants.LEAGUE_SELECTED_MESSAGE;
+            Global.selectedLeagueName = ((TextView) league.
+                    findViewById(R.id.league_name)).getText().toString();
 
-    /**
-     * Adapter to manage league rows
-     */
-    private class LeagueAdapter extends RecyclerView.Adapter<LeagueHolder> {
+            Spinner spinner = getActivity().findViewById(R.id.teams_spinner_news);
+            if(spinner != null){
+                spinner.setSelection(((ArrayAdapter)spinner.getAdapter()).getPosition("All"));
+            }
+            message = String.format(message, Global.selectedLeagueName);
+            Global.showToast(getActivity(), message);
+            mDrawLayout.closeDrawers();
 
-        private LayoutInflater mLayoutInflater;
-        private LeagueHolder mLeagueHolder;
-        private View mLeagueRow;
-        private List<League> mLeagues = Collections.emptyList(); //to avoid null pointer exception
-
-        /**
-         * Constructor
-         *
-         * @param context
-         * @param leagues
-         */
-        public LeagueAdapter(Context context, List<League> leagues) {
-            mLayoutInflater = LayoutInflater.from(context);
-            mLeagues = leagues;
+            return true;
         }
-
-        /**
-         * Inflate league row
-         *
-         * @param viewGroup
-         * @param i
-         * @return
-         */
-        @Override
-        public LeagueHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            mLeagueRow = mLayoutInflater.inflate(R.layout.league_row, viewGroup, false);
-            mLeagueHolder = new LeagueHolder(mLeagueRow);
-            return mLeagueHolder;
-        }
-
-        /**
-         * Bind data to league holder fields
-         *
-         * @param leagueHolder
-         * @param index
-         */
-        @Override
-        public void onBindViewHolder(LeagueHolder leagueHolder, int index) {
-            leagueHolder.getLeagueName().setText(mLeagues.get(index).getName());
-            leagueHolder.getLeagueLogo().setImageResource(mLeagues.get(index).getLogoId());
-        }
-
-        /**
-         * Return number of leagues
-         *
-         * @return
-         */
-        @Override
-        public int getItemCount() {
-            return mLeagues.size();
-        }
+        return false;
     }
-
-    /*******************************************************************************
-     * Holder
-     ********************************************************************************/
-
-    /**
-     * Holder to store league data
-     */
-    private class LeagueHolder extends RecyclerView.ViewHolder {
-        private ImageView mLeagueLogo;
-        private TextView mLeagueName;
-
-        /**
-         * Constructor
-         *
-         * @param itemView
-         */
-        public LeagueHolder(View itemView) {
-            super(itemView);
-            mLeagueLogo = (ImageView) itemView.findViewById(R.id.league_logo);
-            mLeagueName = (TextView) itemView.findViewById(R.id.league_name);
-        }
-
-        /**
-         * Get league logo
-         *
-         * @return
-         */
-        public ImageView getLeagueLogo() {
-            return mLeagueLogo;
-        }
-
-        /**
-         * Get league name
-         *
-         * @return
-         */
-        public TextView getLeagueName() {
-            return mLeagueName;
-        }
-    }
-
 }

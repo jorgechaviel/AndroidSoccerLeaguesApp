@@ -30,6 +30,8 @@ import com.jchaviel.soccerleaguesapp.schedule.SchedulePresenter;
 import com.jchaviel.soccerleaguesapp.schedule.ui.adapter.ScheduleAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -154,7 +156,9 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         //If league name hasnt changed, load saved data from bundle
         if (savedInstanceState != null)
             teamsSpinner.setSelection(savedInstanceState.getInt(Constants.KEY_TEAMS_SPINNER), false);
-        else teamsSpinner.setSelection(INDEX_ZERO, false);
+        else {
+            teamsSpinner.setSelection(INDEX_ZERO, false);
+        }
 
         teamsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -195,7 +199,13 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         //If fragment is has been created before and month hasnt changed since, load saved data from bundle
         if (savedInstanceState != null)
             monthsSpinner.setSelection(savedInstanceState.getInt(Constants.KEY_MONTHS_SPINNER), false);
-        else monthsSpinner.setSelection(INDEX_ZERO, false);
+        else {
+            Date date = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int currentMonth = cal.get(Calendar.MONTH);
+            monthsSpinner.setSelection(currentMonth, false);
+        }
 
         monthsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             /**Handle item selection events

@@ -185,7 +185,8 @@ public class NewsFragment extends Fragment implements NewsView, OnItemClickListe
         if (!mNews.isEmpty()) outState.putSerializable(KEY_NEWS, mNews);
         String title = getActionBarTitle();
         outState.putString(Constants.KEY_ACTION_BAR_TITLE, title);
-        outState.putInt(Constants.KEY_TEAMS_SPINNER, teamsSpinnerNews.getSelectedItemPosition());
+        if(teamsSpinnerNews != null)
+            outState.putInt(Constants.KEY_TEAMS_SPINNER, teamsSpinnerNews.getSelectedItemPosition());
         super.onSaveInstanceState(outState);
     }
 

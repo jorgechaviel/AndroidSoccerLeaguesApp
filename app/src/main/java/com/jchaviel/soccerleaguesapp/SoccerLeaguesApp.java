@@ -3,6 +3,7 @@ package com.jchaviel.soccerleaguesapp;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jchaviel.soccerleaguesapp.clasification.di.ClassificationComponent;
 import com.jchaviel.soccerleaguesapp.clasification.di.ClassificationModule;
@@ -19,6 +20,11 @@ import com.jchaviel.soccerleaguesapp.main.di.DaggerMainComponent;
 import com.jchaviel.soccerleaguesapp.main.di.MainComponent;
 import com.jchaviel.soccerleaguesapp.main.di.MainModule;
 import com.jchaviel.soccerleaguesapp.main.ui.MainView;
+import com.jchaviel.soccerleaguesapp.navigationdrawer.di.DaggerNavigationDrawerComponent;
+import com.jchaviel.soccerleaguesapp.navigationdrawer.di.NavigationDrawerComponent;
+import com.jchaviel.soccerleaguesapp.navigationdrawer.di.NavigationDrawerModule;
+import com.jchaviel.soccerleaguesapp.navigationdrawer.ui.NavigationDrawerFragment;
+import com.jchaviel.soccerleaguesapp.navigationdrawer.ui.adapter.OnItemTouchListener;
 import com.jchaviel.soccerleaguesapp.news.di.DaggerNewsComponent;
 import com.jchaviel.soccerleaguesapp.news.di.NewsComponent;
 import com.jchaviel.soccerleaguesapp.news.di.NewsModule;
@@ -53,8 +59,7 @@ public class SoccerLeaguesApp extends Application {
 
     private void initLeakCanary() {
         if (LeakCanary.isInAnalyzerProcess(this)) {
-//             This process is dedicated to LeakCanary for heap analysis.
-//             You should not init your app in this process.
+            //This process is dedicated to LeakCanary for heap analysis. You should not init your app in this process.
             return;
         }
         LeakCanary.install(this);
@@ -66,7 +71,7 @@ public class SoccerLeaguesApp extends Application {
     }
 
     private void initFirebase() {
-        //Firebase.setAndroidContext(this);
+        FirebaseApp.initializeApp(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
@@ -91,6 +96,16 @@ public class SoccerLeaguesApp extends Application {
                 .domainModule(domainModule)
                 .libsModule(new LibsModule(null))
                 .mainModule(new MainModule(view, titles, fragments, manager))
+                .build();
+    }
+
+    public NavigationDrawerComponent getNavigationDrawerComponent(NavigationDrawerFragment fragment, OnItemTouchListener onItemTouchListener){
+        return DaggerNavigationDrawerComponent
+                .builder()
+                .soccerLeaguesAppModule(soccerLeaguesAppModule)
+                .domainModule(domainModule)
+                .libsModule(new LibsModule(fragment))
+                .navigationDrawerModule(new NavigationDrawerModule(onItemTouchListener))
                 .build();
     }
 

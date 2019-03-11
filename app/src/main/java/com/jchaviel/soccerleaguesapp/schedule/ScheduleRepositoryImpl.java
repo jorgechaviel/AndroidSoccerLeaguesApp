@@ -237,9 +237,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
                         fixtureList.add(fixtureObj);
                     }
-                    fixturesList.addAll(fixtureList);
-                    Log.e(KEY_LOG, PARSING_DONE_MESSAGE);
                 }
+                fixturesList.addAll(fixtureList);
+                Log.e(KEY_LOG, PARSING_DONE_MESSAGE);
             }
 
             private void getTeamFixturesData(List<Fixture> fixtureList, Elements fixtures, String month) {
