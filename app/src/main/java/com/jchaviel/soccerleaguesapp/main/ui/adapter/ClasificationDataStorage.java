@@ -106,8 +106,8 @@ public class ClasificationDataStorage implements DataStorage {
             Elements teams = doc.select("table").first().children().get(INDEX_ONE).children().select("tr");
 
             int numberOfTeams = teams.size();
-            List<String> teamNames = new ArrayList<String>(); //Stores team names only
-            List<Team> teamList = new ArrayList<Team>(); //Stores team objects
+            List<String> teamNames = new ArrayList<>(); //Stores team names only
+            List<Team> teamList = new ArrayList<>(); //Stores team objects
 
             // INDEX_ONE to ignore table header
             for (int index = INDEX_ONE; index < numberOfTeams; index++) {
@@ -131,9 +131,11 @@ public class ClasificationDataStorage implements DataStorage {
                 String goalDiff = team.child(INDEX_TWENTY_TWO).text();
                 String points = team.child(INDEX_TWENTY_THREE).text();
 
+                String league = Constants.LEAGUE_NAMES[itemPosition];
+
                 /**********HTML parsing to get data************/
 
-                teamList.add(new Team(teamName, rank, matchesPlayed, wins, draws, loss, goalDiff, points, teamHomeLink));
+                teamList.add(new Team(teamName, rank, matchesPlayed, wins, draws, loss, goalDiff, points, teamHomeLink, league));
                 teamNames.add(teamName);
             }
 

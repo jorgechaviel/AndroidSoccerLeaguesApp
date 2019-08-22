@@ -11,7 +11,7 @@ public interface ClassificationPresenter {
     void onCreate();
     void onDestroy();
 
-    void subscribe(ArrayList<Team> teamList);
+    void subscribe(ArrayList<Team> teamList, boolean isConnected);
     void unsubscribe();
 
     void onEventMainThread(ClassificationListEvent event); //cuando recibimos respuesta

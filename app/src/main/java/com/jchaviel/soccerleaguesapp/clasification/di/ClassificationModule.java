@@ -8,6 +8,7 @@ import com.jchaviel.soccerleaguesapp.clasification.ClassificationRepository;
 import com.jchaviel.soccerleaguesapp.clasification.ClassificationRepositoryImpl;
 import com.jchaviel.soccerleaguesapp.clasification.ui.ClassificationView;
 import com.jchaviel.soccerleaguesapp.clasification.ui.adapter.ClassificationAdapter;
+import com.jchaviel.soccerleaguesapp.domain.FirebaseAPI;
 import com.jchaviel.soccerleaguesapp.entities.Team;
 import com.jchaviel.soccerleaguesapp.lib.base.EventBus;
 
@@ -45,8 +46,8 @@ public class ClassificationModule {
     }
 
     @Provides @Singleton
-    public ClassificationRepository providesClassificationRepository(EventBus eventBus){
-        return new ClassificationRepositoryImpl(eventBus);
+    public ClassificationRepository providesClassificationRepository(FirebaseAPI firebase, EventBus eventBus){
+        return new ClassificationRepositoryImpl(firebase, eventBus);
     }
 
     @Provides @Singleton

@@ -298,9 +298,12 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                for (Fixture fixture: fixturesList) {
-                    post(ScheduleListEvent.READ_EVENT, fixture);
-                }
+                if(fixturesList.size() > 0)
+                    for (Fixture fixture: fixturesList) {
+                        post(ScheduleListEvent.READ_EVENT, fixture);
+                    }
+                else
+                    post(ScheduleListEvent.READ_EVENT, "Listado vacío");
             }
         };
     }

@@ -20,6 +20,7 @@ import com.jchaviel.soccerleaguesapp.R;
 import com.jchaviel.soccerleaguesapp.SoccerLeaguesApp;
 import com.jchaviel.soccerleaguesapp.clasification.ClassificationPresenter;
 import com.jchaviel.soccerleaguesapp.clasification.ui.adapter.ClassificationAdapter;
+import com.jchaviel.soccerleaguesapp.domain.Utils;
 import com.jchaviel.soccerleaguesapp.entities.Team;
 import com.jchaviel.soccerleaguesapp.global.Constants;
 
@@ -86,7 +87,7 @@ public class ClassificationFragment extends Fragment implements ClassificationVi
             public void onReceive(Context context, Intent intent) {
                 adapter.clearTeams();
                 teamList.clear();
-                presenter.subscribe(teamList);
+                presenter.subscribe(teamList, Utils.isConnected(getActivity()));
                 adapter.notifyDataSetChanged();
             }
         };
@@ -104,7 +105,7 @@ public class ClassificationFragment extends Fragment implements ClassificationVi
 
         adapter.clearTeams();
         teamList = new ArrayList<>();
-        presenter.subscribe(teamList);
+        presenter.subscribe(teamList, Utils.isConnected(getActivity()));
         return mTableView;
     }
 

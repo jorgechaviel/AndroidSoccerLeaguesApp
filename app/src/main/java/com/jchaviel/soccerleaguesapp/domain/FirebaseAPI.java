@@ -18,7 +18,7 @@ public class FirebaseAPI {
 
     private DatabaseReference firebase;
     private FirebaseAuth firebaseAuth;
-    private ChildEventListener photosEventListener;
+    private ChildEventListener teamsEventListener;
 
     private final static String SEPARATOR = "___";
 
@@ -33,7 +33,7 @@ public class FirebaseAPI {
     public void checkForData(final FirebaseActionListenerCallback listenerCallback){
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() > 0){
                     listenerCallback.onSuccess();
                 } else {
@@ -42,37 +42,37 @@ public class FirebaseAPI {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listenerCallback.onError(databaseError);
             }
         });
     }
 
     public void subscribe(final FirebaseEventListenerCallback listenerCallback){
-        if (photosEventListener == null){
-            photosEventListener = new ChildEventListener() {
+        if (teamsEventListener == null){
+            teamsEventListener = new ChildEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                     listenerCallback.onChildAdded(dataSnapshot);
                 }
 
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {}
 
                 @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                     listenerCallback.onChildRemoved(dataSnapshot);
                 }
 
                 @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {}
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                     listenerCallback.onCanceller(databaseError);
                 }
             };
-            firebase.addChildEventListener(photosEventListener);
+            firebase.addChildEventListener(teamsEventListener);
         }
     }
 
@@ -81,13 +81,13 @@ public class FirebaseAPI {
      */
 
     public void unsubscribe(){
-        if(photosEventListener != null){
-            firebase.removeEventListener(photosEventListener);
+        if(teamsEventListener != null){
+            firebase.removeEventListener(teamsEventListener);
         }
     }
 
     /**
-     * Metodos para guardar, eliminar o actualizar una fotografia
+     * Metodos para guardar, eliminar o actualizar una equipo
      */
 
     public String create(){
@@ -101,7 +101,7 @@ public class FirebaseAPI {
     public String getAuthEmail(){
         String email = null;
         if(firebaseAuth != null){
-            email = firebaseAuth.getCurrentUser().getEmail().toString();
+            email = firebaseAuth.getCurrentUser().getEmail();
         }
         return email;
     }

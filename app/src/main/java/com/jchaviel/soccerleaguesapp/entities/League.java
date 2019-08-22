@@ -1,8 +1,11 @@
 package com.jchaviel.soccerleaguesapp.entities;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * Created by jchavielreyes On 12/07/2016.
  */
+@IgnoreExtraProperties
 public class League {
     private int mLogoId; //Id of logo
     private String mName;

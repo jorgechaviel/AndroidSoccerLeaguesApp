@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.jchaviel.soccerleaguesapp.R;
 import com.jchaviel.soccerleaguesapp.SoccerLeaguesApp;
 import com.jchaviel.soccerleaguesapp.entities.Fixture;
@@ -28,13 +27,10 @@ import com.jchaviel.soccerleaguesapp.global.Constants;
 import com.jchaviel.soccerleaguesapp.global.Global;
 import com.jchaviel.soccerleaguesapp.schedule.SchedulePresenter;
 import com.jchaviel.soccerleaguesapp.schedule.ui.adapter.ScheduleAdapter;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -126,7 +122,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
             fixtureList = (ArrayList<Fixture>) savedInstanceState.getSerializable(KEY_FIXTURES);
 
         } else { //Fetch new data from web
-            fixtureList = new ArrayList<Fixture>();
+            fixtureList = new ArrayList<>();
         }
 
         fetchData(); //Fetch data for teams
@@ -152,6 +148,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
                 android.R.layout.simple_spinner_item, Global.sortedTeamNameList);
         mTeamsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         teamsSpinner.setAdapter(mTeamsSpinnerAdapter);
+        mTeamsSpinnerAdapter.notifyDataSetChanged();
 
         //If league name hasnt changed, load saved data from bundle
         if (savedInstanceState != null)
@@ -237,6 +234,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
             @Override
             public void onReceive(Context context, Intent intent) {
                 fixtureList.clear();
+                teamsSpinner.setTag("UPDATING");
                 fetchData();
                 scheduleAdapter.notifyDataSetChanged();
             }
@@ -306,6 +304,12 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
     @Override
     public void showList() {
         recyclerView.setVisibility(View.VISIBLE);
+        if(!Global.sortedTeamNameList.isEmpty() && teamsSpinner.getTag() == "UPDATING") {
+            teamsSpinner.setVisibility(View.GONE);
+            teamsSpinner.setSelection(0);
+            teamsSpinner.setVisibility(View.VISIBLE);
+        }
+        teamsSpinner.setTag("UPDATE_FINISHED");
     }
 
     @Override
@@ -327,6 +331,25 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean visible)
+    {
+        super.setUserVisibleHint(visible);
+        if (visible && isResumed())
+        {
+            //Only manually call onResume if fragment is already visible
+            //Otherwise allow natural fragment lifecycle to call onResume
+            onResume();
+            if(!Global.sortedTeamNameList.isEmpty()) {
+                try {
+                    teamsSpinner.getSelectedItem().toString().trim();
+                } catch (NullPointerException e) {
+                    setTeamsSpinner(null);
+                }
+            }
+        }
     }
 
 }

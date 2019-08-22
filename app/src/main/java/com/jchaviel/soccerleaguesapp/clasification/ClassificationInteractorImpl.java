@@ -13,8 +13,8 @@ public class ClassificationInteractorImpl implements ClassificationInteractor{
     }
 
     @Override
-    public void subscribe(ArrayList<Team> teamList) {
-        this.repository.subscribe(teamList);
+    public void subscribe(ArrayList<Team> teamList, boolean isConnected) {
+        this.repository.subscribe(teamList, isConnected);
     }
 
     @Override

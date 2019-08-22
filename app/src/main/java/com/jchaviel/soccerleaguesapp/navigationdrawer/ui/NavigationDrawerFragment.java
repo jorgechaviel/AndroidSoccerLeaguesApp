@@ -1,6 +1,7 @@
 package com.jchaviel.soccerleaguesapp.navigationdrawer.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,7 +69,7 @@ public class NavigationDrawerFragment extends Fragment implements OnItemTouchLis
      * @return
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
@@ -128,7 +129,7 @@ public class NavigationDrawerFragment extends Fragment implements OnItemTouchLis
              * @return
              */
             @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
                 //Gey view under touch using coordinates
                 View league = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
 
@@ -158,7 +159,7 @@ public class NavigationDrawerFragment extends Fragment implements OnItemTouchLis
              * @param motionEvent
              */
             @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
             }
         });
     }

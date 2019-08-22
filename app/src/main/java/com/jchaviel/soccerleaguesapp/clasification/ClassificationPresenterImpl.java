@@ -33,13 +33,13 @@ public class ClassificationPresenterImpl implements ClassificationPresenter {
     }
 
     @Override
-    public void subscribe(ArrayList<Team> teamList) {
+    public void subscribe(ArrayList<Team> teamList, boolean isConnected) {
         if(this.view != null){
             view.hideTeamList();
             view.hideHeading();
             view.showProgress();
         }
-        this.interactor.subscribe(teamList);
+        this.interactor.subscribe(teamList, isConnected);
     }
 
     @Override

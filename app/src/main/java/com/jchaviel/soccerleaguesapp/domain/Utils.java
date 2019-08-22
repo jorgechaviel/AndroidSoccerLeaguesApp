@@ -1,7 +1,11 @@
 package com.jchaviel.soccerleaguesapp.domain;
 
+import android.app.Activity;
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -62,5 +66,14 @@ public class Utils {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static boolean isConnected(Activity activity){
+        ConnectivityManager cm =
+                (ConnectivityManager)activity.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 }

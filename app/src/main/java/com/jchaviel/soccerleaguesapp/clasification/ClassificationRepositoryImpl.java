@@ -3,6 +3,7 @@ package com.jchaviel.soccerleaguesapp.clasification;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import com.jchaviel.soccerleaguesapp.clasification.events.ClassificationListEvent;
+import com.jchaviel.soccerleaguesapp.domain.FirebaseAPI;
 import com.jchaviel.soccerleaguesapp.entities.Team;
 import com.jchaviel.soccerleaguesapp.global.Global;
 import com.jchaviel.soccerleaguesapp.lib.base.EventBus;
@@ -11,22 +12,26 @@ import java.util.List;
 
 public class ClassificationRepositoryImpl implements ClassificationRepository{
 
-    EventBus eventBus;
+    private FirebaseAPI firebase;
+    private EventBus eventBus;
     private List<Team> teamList;
 
-    public ClassificationRepositoryImpl(EventBus eventBus) {
+    public ClassificationRepositoryImpl(FirebaseAPI firebase, EventBus eventBus) {
+        this.firebase = firebase;
         this.eventBus = eventBus;
     }
 
     @Override
-    public void subscribe(ArrayList<Team> teamList) {
-        loadTeams().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
-                teamList);
+    public void subscribe(ArrayList<Team> teamList, boolean isConnected) {
+        if(isConnected) {
+            loadTeams().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+                    teamList);
+        }
     }
 
     @Override
     public void unsubscribe() {
-        //TODO: no se que poner
+        //TODO:
     }
 
     private void post(int type, String error) {
